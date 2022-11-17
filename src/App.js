@@ -71,6 +71,7 @@ function App() {
             >
               <MenuItem value='Normal'>Normal</MenuItem>
               <MenuItem value='Streamer'>Streamer</MenuItem>
+              <MenuItem value='Dev'>Dev</MenuItem>
             </Select>
           </FormControl>
         </Box>
