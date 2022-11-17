@@ -3,7 +3,7 @@ import './App.css';
 import DataTable from 'react-data-table-component';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Box, Container, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import { Box, Container, FormControl, Grid, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 
 
 const columns = [
@@ -14,14 +14,6 @@ const columns = [
   {
       name: 'Username',
       selector: row => row.Username,
-  },
-  {
-      name: 'Difficulty',
-      selector: row => row.Difficulty,
-  },
-  {
-    name: 'PlayerType',
-    selector: row => row.PlayerType,
   },
   {
     name: 'DamageReceived',
@@ -38,13 +30,19 @@ const columns = [
 function App() {
   const [rank, setRank] = useState()
   const [difficulty, setDifficulty] = useState('Easy');
+  const [playerType, setPlayerType] = useState('Normal');
 
-  const handleChange = (event) => {
+  const handleChangeDifficulty = (event) => {
     setDifficulty(event.target.value);
   };
 
+  const handleChangePlayerType = (event) => {
+    setPlayerType(event.target.value);
+  };
+
   useEffect(() => {
-    axios.get(`https://goldilockone-ranking-api.herokuapp.com/?difficulty=${difficulty}`)
+    //axios.get(`http://localhost:5000/?difficulty=${difficulty}&playerType=${playerType}`)
+    axios.get(`https://goldilockone-ranking-api.herokuapp.com/?difficulty=${difficulty}&playerType=${playerType}`)
       .then(function (response) {
         setRank(response.data)
       })
@@ -52,30 +50,53 @@ function App() {
         // handle error
         //console.log(error);
       })
-  }, [difficulty])
+  }, [difficulty, playerType])
 
   return (
     <Container maxWidth="md" style={{ paddingTop: 20 }}>
       <Typography variant="h3" gutterBottom>
         Goldilock One Ranking
       </Typography>
-      <Box sx={{ width: 120 }}>
-        <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Difficulty</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={difficulty}
-            label="Difficulty"
-            onChange={handleChange}
-          >
-            <MenuItem value='Easy'>Easy</MenuItem>
-            <MenuItem value='Normal'>Normal</MenuItem>
-            <MenuItem value='Hard'>Hard</MenuItem>
-            <MenuItem value='Very Hard'>Very Hard</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
+      <Grid container spacing={2}>
+      <Grid item>
+        <Box sx={{ width: 120 }}>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Player Type</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={playerType}
+              label="playerType"
+              onChange={handleChangePlayerType}
+            >
+              <MenuItem value='Normal'>Normal</MenuItem>
+              <MenuItem value='Streamer'>Streamer</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+      </Grid>
+      <Grid item>
+        <Box sx={{ width: 120 }}>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Difficulty</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={difficulty}
+              label="Difficulty"
+              onChange={handleChangeDifficulty}
+            >
+              <MenuItem value='Easy'>Easy</MenuItem>
+              <MenuItem value='Normal'>Normal</MenuItem>
+              <MenuItem value='Hard'>Hard</MenuItem>
+              <MenuItem value='Very Hard'>Very Hard</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+      </Grid>
+    </Grid>
+      
+      
       <DataTable
         columns={columns}
         data={rank}
