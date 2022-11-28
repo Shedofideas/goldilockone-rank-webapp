@@ -3,7 +3,10 @@ import './App.css';
 import DataTable from 'react-data-table-component';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Box, Container, FormControl, Grid, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import { Box, Container, FormControl, Grid, InputLabel, MenuItem, Select, useMediaQuery } from '@mui/material';
+import logo from './assets/img/logo branca playtest.png'
+import topBackground from './assets/img/Quina esquerda superior playtest.png'
+import { useTheme } from '@mui/material/styles';
 
 
 const columns = [
@@ -28,6 +31,10 @@ const columns = [
 ];
 
 function App() {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
+  const matchesLg = useMediaQuery(theme.breakpoints.up('lg'));
+
   const [rank, setRank] = useState()
   const [difficulty, setDifficulty] = useState('Easy');
   const [playerType, setPlayerType] = useState('Normal');
@@ -54,48 +61,51 @@ function App() {
 
   return (
     <Container maxWidth="md" style={{ paddingTop: 20 }}>
-      <Typography variant="h3" gutterBottom>
-        Goldilock One Ranking
-      </Typography>
-      <Grid container spacing={2}>
-      <Grid item>
-        <Box sx={{ width: 120 }}>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Player Type</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={playerType}
-              label="playerType"
-              onChange={handleChangePlayerType}
-            >
-              <MenuItem value='Normal'>Normal</MenuItem>
-              <MenuItem value='Streamer'>Streamer</MenuItem>
-              <MenuItem value='Dev'>Dev</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
+      <img src={topBackground} alt='top background' style={{ position: 'absolute', top: '0', left: '0', width: matchesLg ? '250px' : '80px' }} />
+      <Grid container spacing={2} style={{ justifyContent: 'flex-end', marginBottom: '15px' }} >
+        <Grid style={{ display: 'flex', flex: 2, padding: '0px 30px', justifyContent: !matches ? 'center' : 'flex-start' }}>
+          <img alt='logo' src={logo} style={{ height: !matches ? '100px' : '180px' }} />
+        </Grid>
+        <Grid style={{ display: 'flex', flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+          <Grid item>
+            <Box sx={{ width: 120 }}>
+              <FormControl style={{ backgroundColor: '#fff' }} fullWidth>
+                <InputLabel id="demo-simple-select-label">Player Type</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={playerType}
+                  label="playerType"
+                  onChange={handleChangePlayerType}
+                >
+                  <MenuItem value='Normal'>Normal</MenuItem>
+                  <MenuItem value='Streamer'>Streamer</MenuItem>
+                  <MenuItem value='Dev'>Dev</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+          </Grid>
+          <Grid item>
+            <Box sx={{ width: 120 }}>
+              <FormControl style={{ backgroundColor: '#fff' }} fullWidth>
+                <InputLabel id="demo-simple-select-label">Difficulty</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={difficulty}
+                  label="Difficulty"
+                  onChange={handleChangeDifficulty}
+                >
+                  <MenuItem value='Easy'>Easy</MenuItem>
+                  <MenuItem value='Normal'>Normal</MenuItem>
+                  <MenuItem value='Hard'>Hard</MenuItem>
+                  <MenuItem value='Very Hard'>Very Hard</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+          </Grid>
+        </Grid>
       </Grid>
-      <Grid item>
-        <Box sx={{ width: 120 }}>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Difficulty</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={difficulty}
-              label="Difficulty"
-              onChange={handleChangeDifficulty}
-            >
-              <MenuItem value='Easy'>Easy</MenuItem>
-              <MenuItem value='Normal'>Normal</MenuItem>
-              <MenuItem value='Hard'>Hard</MenuItem>
-              <MenuItem value='Very Hard'>Very Hard</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-      </Grid>
-    </Grid>
       
       
       <DataTable
