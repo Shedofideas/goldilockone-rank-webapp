@@ -13,24 +13,23 @@ const columns = [
   {
     name: 'Position',
     selector: row => row.Position,
-    width: '50px'
+    width: '70px'
   },
   {
     name: 'Username',
     selector: row => row.Username,
-    width: '100px'
   },
   {
     name: 'DamageReceived',
     selector: row => row.DamageReceived,
     sortable: true,
-    width: '100px'
+    maxWidth: '100px'
   },
   {
     name: 'Duration',
     selector: row => row.Duration,
     sortable: true,
-    width: '100px'
+    maxWidth: '100px'
   },
 ];
 
